@@ -11,47 +11,34 @@ type ToolExecutionResult =
     | { executed: true; result: any; commentary?: string; toolName: string };
 
 const parseToolInvocation = (text: string): ToolInvocation | null => {
-    const lines: string[] = text.split('\n');
-    let toolLine: string | null = null;
-    let toolLineIndex = -1;
-    
-    // Find the line with tool invocation
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i]?.trim().startsWith("tool: ")) {
-            toolLine = lines[i] || null;
-            toolLineIndex = i;
-            break;
-        }
-    }
+    const lines = text.split('\n');
 
-    if (!toolLine) return null;
+    const toolLineIndex = lines.findIndex(line => line.startsWith('tool:'));
+    if (toolLineIndex === -1) return null;
 
     try {
-        const content = toolLine.trim().slice("tool: ".length);
+        const toolLine = lines[toolLineIndex] && lines[toolLineIndex].trim();
+        if (!toolLine) return null;
+
+        const match = toolLine.match(/^tool:\s*(\w+)\((.*)\)$/);
+        if (!match) return null;
+
+        const [, name, argsString] = match;
+        if (!name || !argsString) return null;
         
-        const openParenIndex = content.indexOf("(");
-        const closeParenIndex = content.lastIndexOf(")");
-
-        if (openParenIndex === -1 || closeParenIndex === -1 || closeParenIndex < openParenIndex) {
-            return null;
-        }
-
-        const name = content.slice(0, openParenIndex).trim();
-        const argsString = content.slice(openParenIndex + 1, closeParenIndex);
         const args = JSON.parse(argsString);
 
-        // Extract commentary (everything before the tool line)
         const commentary = lines.slice(0, toolLineIndex)
             .map(line => line.trim())
             .filter(line => line.length > 0)
             .join(' ');
-
-        return { 
-            name, 
+        
+        return {
+            name,
             args,
             commentary: commentary || undefined
         };
-    } catch (error) {
+    } catch {
         return null;
     }
 };
