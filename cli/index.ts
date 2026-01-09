@@ -1,6 +1,7 @@
 import { CodingAgent } from '../agent';
 import { CLI_COLORS } from '../utils/colors';
 import { handleSettingsCommand, isSettingsCommand } from "./settings.ts";
+import { LoadingIndicator } from './loading';
 
 export const runCLI = async () => {
     const agent = new CodingAgent();
@@ -20,10 +21,22 @@ export const runCLI = async () => {
                 continue;
             }
 
-            const { response, commentary } = await agent.chat(userMessage);
+            const loading = new LoadingIndicator();
+            loading.start();
 
-            if (commentary) console.log(CLI_COLORS.ASSISTANT + commentary + CLI_COLORS.RESET);
-            console.log(CLI_COLORS.ASSISTANT + "Cog:" + CLI_COLORS.RESET, response);
+            try {
+                const { response, commentary } = await agent.chat(userMessage);
+                loading.stop();
+                
+                if (commentary) {
+                    console.log(CLI_COLORS.ASSISTANT + commentary + CLI_COLORS.RESET);
+                }
+                
+                console.log(CLI_COLORS.ASSISTANT + "Cog:" + CLI_COLORS.RESET, response);
+            } catch (error) {
+                loading.stop();
+                throw error;
+            }
         } catch (error) {
             console.log(CLI_COLORS.ERROR + "Error:" + CLI_COLORS.RESET, error);
         }
