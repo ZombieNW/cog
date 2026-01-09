@@ -1,5 +1,6 @@
 import { CodingAgent } from '../agent';
 import { CLI_COLORS } from '../utils/colors';
+import { handleSettingsCommand, isSettingsCommand } from "./settings.ts";
 
 export const runCLI = async () => {
     const agent = new CodingAgent();
@@ -12,10 +13,19 @@ export const runCLI = async () => {
 
             if (!userMessage.trim()) continue;
 
-            const response = await agent.chat(userMessage);
-            console.log(CLI_COLORS.ASSISTANT + "Cog: " + CLI_COLORS.RESET, response);
+            // Check if it's a settings command
+            if (isSettingsCommand(userMessage)) {
+                const result = await handleSettingsCommand(userMessage);
+                console.log(CLI_COLORS.ASSISTANT + result + CLI_COLORS.RESET);
+                continue;
+            }
+
+            const { response, commentary } = await agent.chat(userMessage);
+
+            if (commentary) console.log(CLI_COLORS.ASSISTANT + commentary + CLI_COLORS.RESET);
+            console.log(CLI_COLORS.ASSISTANT + "Cog:" + CLI_COLORS.RESET, response);
         } catch (error) {
-            console.log(CLI_COLORS.ERROR + "Error: " + CLI_COLORS.RESET, error);
+            console.log(CLI_COLORS.ERROR + "Error:" + CLI_COLORS.RESET, error);
         }
     }
 }
