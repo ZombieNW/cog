@@ -1,5 +1,11 @@
 {
   "name": "cog",
+  "author": "ZombieNW",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZombieNW/cog"
+  },
   "module": "index.ts",
   "type": "module",
   "private": true,
