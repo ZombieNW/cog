@@ -2,7 +2,8 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import type { Config } from './types.ts';
 
-const CONFIG_PATH = join(process.cwd(), 'cog.config.json');
+const isBunCompiled = process.execPath.endsWith('.js');
+const CONFIG_PATH = isBunCompiled ? join(process.execPath, 'cog.config.json') : join(__dirname, '..', 'cog.config.json');
 
 const DEFAULT_CONFIG: Config = {
     currentProvider: "ollama",
