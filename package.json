@@ -6,6 +6,10 @@
     "type": "git",
     "url": "https://github.com/ZombieNW/cog"
   },
+  "scripts": {
+    "build": "bun build ./index.ts --compile --outfile ./dist/cog.exe",
+    "dev": "bun run ./index.ts"
+  },
   "module": "index.ts",
   "type": "module",
   "private": true,
