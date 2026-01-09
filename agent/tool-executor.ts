@@ -18,15 +18,16 @@ const parseToolInvocation = (text: string): ToolInvocation | null => {
 
     try {
         const toolLine = lines[toolLineIndex] && lines[toolLineIndex].trim();
-        if (!toolLine) return null;
+        if (!toolLine) throw new Error('Invalid tool invocation - empty line');
 
         const match = toolLine.match(/^tool:\s*(\w+)\((.*)\)$/);
-        if (!match) return null;
+        if (!match) throw new Error('Invalid tool invocation - no match');
 
         const [, name, argsString] = match;
-        if (!name || !argsString) return null;
+        if (!name || !argsString) throw new Error('Invalid tool invocation - no name or args');
         
         const args = JSON.parse(argsString);
+        if (!args) throw new Error('Invalid Argument JSON');
 
         const commentary = lines.slice(0, toolLineIndex)
             .map(line => line.trim())
