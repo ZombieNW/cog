@@ -10,7 +10,7 @@ export class LoadingIndicator {
 			process.stdout.write(
 				`\r${CLI_COLORS.ASSISTANT}${this.frames[this.currentFrame]} Thinking...${CLI_COLORS.RESET}`,
 			);
-			this.currentFrame = (this.currentFrame + 1) % this.frames.length;
+			this.currentFrame = (this.currentFrame + 1) % this.frames.length; // Cycle through frames
 		}, 80);
 	}
 

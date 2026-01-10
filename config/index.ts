@@ -6,7 +6,7 @@ import type { Config } from './types.ts';
 const isBunCompiled = process.execPath.endsWith('.js');
 const CONFIG_PATH = isBunCompiled
 	? join(process.execPath, 'cog.config.json')
-	: join(__dirname, '..', 'cog.config.json');
+	: join(__dirname, '..', 'cog.config.json'); // Determine if being interpreted or compiled/executed to determine config path
 
 const DEFAULT_CONFIG: Config = {
 	currentProvider: 'ollama',
@@ -30,6 +30,7 @@ const DEFAULT_CONFIG: Config = {
 };
 
 export const loadConfig = (): Config => {
+	// Create config file if it doesn't exist
 	if (!existsSync(CONFIG_PATH)) {
 		saveConfig(DEFAULT_CONFIG);
 		return DEFAULT_CONFIG;

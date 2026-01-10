@@ -28,6 +28,7 @@ export const editFileTool: ToolDefinition = {
 	handler: ({ path, old_content, new_content }) => {
 		const fullPath = resolveAbsPath(path);
 
+		// If old_content is empty, create a new file
 		if (!old_content) {
 			writeFileSync(fullPath, new_content, { flag: 'wx' });
 			return {
@@ -36,8 +37,8 @@ export const editFileTool: ToolDefinition = {
 			};
 		}
 
+		// Return error if old_content is not found in the file
 		const original = readFileSync(fullPath, 'utf-8');
-
 		if (!original.includes(old_content)) {
 			return {
 				path: fullPath,
@@ -45,6 +46,7 @@ export const editFileTool: ToolDefinition = {
 			};
 		}
 
+		// Replace old_content with new_content and write to file
 		writeFileSync(fullPath, original.replace(old_content, new_content));
 		return {
 			path: fullPath,

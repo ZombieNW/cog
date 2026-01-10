@@ -28,11 +28,11 @@ export const runCLI = async () => {
 			}
 
 			const loading = new LoadingIndicator();
-			loading.start();
+			loading.start(); // Start loading symbol
 
 			try {
-				const { response, commentary } = await agent.chat(userMessage);
-				loading.stop();
+				const { response, commentary } = await agent.chat(userMessage); // Chat with agent
+				loading.stop(); // Stop loading symbol
 
 				if (commentary) {
 					console.log(

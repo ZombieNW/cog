@@ -9,10 +9,9 @@ export const handleSettingsCommand = async (
 ): Promise<string> => {
 	const parts = message.trim().split(/\s+/);
 
-	// Remove prefix
-	parts.shift();
+	parts.shift(); // Remove prefix
 
-	// Show settings
+	// cog settings
 	if (parts.length === 0) {
 		return showCurrentSettings();
 	}
@@ -23,6 +22,7 @@ export const handleSettingsCommand = async (
 			return (
 				CLI_COLORS.ERROR + 'Missing provider name' + CLI_COLORS.RESET
 			);
+
 		return switchProvider(parts[1]);
 	}
 
@@ -33,8 +33,10 @@ export const handleSettingsCommand = async (
 			return (
 				CLI_COLORS.ERROR + 'Missing provider name' + CLI_COLORS.RESET
 			);
+
 		const key = parts[1];
 		if (!key) return CLI_COLORS.ERROR + 'Missing key' + CLI_COLORS.RESET;
+
 		const value = parts.slice(2).join(' ');
 		return setProviderSetting(provider, key, value);
 	}
@@ -61,9 +63,9 @@ const showCurrentSettings = (): string => {
 		for (const [key, value] of Object.entries(settings)) {
 			const displayValue =
 				key.toLowerCase().includes('key') && value
-					? '******'
-					: value || '(not set)';
-			output += `\t${key}: ${displayValue}\n`;
+					? '******' // Censor Keys
+					: value || '(not set)'; // Show 'not set' if value is empty
+			output += `\t  ${key}: ${displayValue}\n`;
 		}
 	}
 
@@ -106,7 +108,7 @@ const setProviderSetting = (
 	config.providers[provider][key] = value;
 	saveConfig(config);
 
-	const displayValue = key.toLowerCase().includes('key') ? '******' : value;
+	const displayValue = key.toLowerCase().includes('key') ? '******' : value; // Censor keys
 	return (
 		CLI_COLORS.SUCCESS +
 		`Set ${provider}.${key} = ${displayValue}` +

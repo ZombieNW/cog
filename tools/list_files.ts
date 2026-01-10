@@ -20,6 +20,7 @@ export const listFilesTool: ToolDefinition = {
 	handler: ({ path }) => {
 		const fullPath = resolveAbsPath(path);
 
+		// Make list of all items in directory and label if it's a dir/file
 		const files = readdirSync(fullPath).map((file) => ({
 			filename: file,
 			type: statSync(resolveAbsPath(`${path}/${file}`)).isDirectory()
