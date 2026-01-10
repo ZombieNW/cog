@@ -1,5 +1,5 @@
 import { loadConfig, saveConfig } from '../config';
-import { CLI_COLORS } from '../utils/colors';
+import { CLI_COLORS } from '../utils/colors.ts';
 
 export const isSettingsCommand = (message: string): boolean => message.trim().startsWith('settings');
 

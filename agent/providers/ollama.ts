@@ -1,5 +1,5 @@
 import ollama, { type ChatResponse, type Message } from 'ollama';
-import type { ProviderConfig } from '../../config/types';
+import type { ProviderConfig } from '../../config/types.ts';
 
 export const executeOllama = async (
     conversation: Message[],

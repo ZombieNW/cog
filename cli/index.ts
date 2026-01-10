@@ -1,7 +1,7 @@
 import { CodingAgent } from '../agent';
-import { CLI_COLORS } from '../utils/colors';
+import { CLI_COLORS } from '../utils/colors.ts';
 import { handleSettingsCommand, isSettingsCommand } from "./settings.ts";
-import { LoadingIndicator } from './loading';
+import { LoadingIndicator } from './loading.ts';
 
 export const runCLI = async () => {
     const agent = new CodingAgent();

@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
-import { resolveAbsPath } from "../utils/paths";
+import { resolveAbsPath } from "../utils/paths.ts";
 
-import type { ToolDefinition } from "./types";
+import type { ToolDefinition } from "./types.ts";
 
 export const readFileTool: ToolDefinition = {
     name: 'read_file',

@@ -1,4 +1,4 @@
-import { CLI_COLORS } from '../utils/colors';
+import { CLI_COLORS } from '../utils/colors.ts';
 
 export class LoadingIndicator {
     private frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];

@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
-import { resolveAbsPath } from "../utils/paths";
+import { resolveAbsPath } from "../utils/paths.ts";
 
-import type { ToolDefinition } from "./types";
+import type { ToolDefinition } from "./types.ts";
 
 export const editFileTool: ToolDefinition = {
     name: "edit_file",

@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { Message } from 'ollama';
-import type { ProviderConfig } from '../../config/types';
+import type { ProviderConfig } from '../../config/types.ts';
 
 export const executeGemini = async (
     conversation: Message[],

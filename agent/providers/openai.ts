@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 import type { Message } from 'ollama';
-import type { ProviderConfig } from '../../config/types';
+import type { ProviderConfig } from '../../config/types.ts';
 
 interface OpenAIResponse {
     choices: { message: { content: string } }[];

@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import type { Message } from 'ollama';
-import type { ProviderConfig } from '../../config/types';
+import type { ProviderConfig } from '../../config/types.ts';
 
 export const executeAnthropic = async (
     conversation: Message[],

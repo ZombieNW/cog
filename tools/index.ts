@@ -1,8 +1,8 @@
-import { readFileTool } from "./read_file";
-import { listFilesTool } from "./list_files";
-import { editFileTool } from "./edit_file";
+import { readFileTool } from "./read_file.ts";
+import { listFilesTool } from "./list_files.ts";
+import { editFileTool } from "./edit_file.ts";
 
-import type { ToolDefinition } from "./types";
+import type { ToolDefinition } from "./types.ts";
 
 export const TOOL_REGISTRY: Record<string, ToolDefinition> = {
   [readFileTool.name]: readFileTool,
