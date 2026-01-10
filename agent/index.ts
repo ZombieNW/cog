@@ -1,57 +1,65 @@
-import type { Message } from "ollama";
+import type { Message } from 'ollama';
 
-import { executeLLMCall } from "./llm.ts";
-import { executeToolIfNeeded } from "./tool-executor.ts";
-import { buildSystemPrompt } from "./system-prompt.ts";
+import { executeLLMCall } from './llm.ts';
+import { executeToolIfNeeded } from './tool-executor.ts';
+import { buildSystemPrompt } from './system-prompt.ts';
 
 type ChatResult = {
-    response: string;
-    commentary?: string;
-}
+	response: string;
+	commentary?: string;
+};
 
 export class CodingAgent {
-    private conversation: Message[] = [];
-    private maxIterations = 5;
+	private conversation: Message[] = [];
+	private maxIterations = 5;
 
-    constructor() {
-        this.reset();
-    }
+	constructor() {
+		this.reset();
+	}
 
-    async chat(userMessage: string): Promise<ChatResult> {
-        this.conversation.push({role: 'user', content: userMessage});
-        
-        for (let i = 0; i < this.maxIterations; i++) {
-            const assistantResponse = await executeLLMCall(this.conversation);
-            this.conversation.push({role: 'assistant', content: assistantResponse});
-            
-            const toolResult = await executeToolIfNeeded(assistantResponse);
+	async chat(userMessage: string): Promise<ChatResult> {
+		this.conversation.push({ role: 'user', content: userMessage });
 
-            if (toolResult.executed) {
-                // Add tool result to conversation and continue loop
-                this.conversation.push({role: 'assistant', content: JSON.stringify(toolResult.result)});
+		for (let i = 0; i < this.maxIterations; i++) {
+			const assistantResponse = await executeLLMCall(this.conversation);
+			this.conversation.push({
+				role: 'assistant',
+				content: assistantResponse,
+			});
 
-                // Return commentary if LLM added context before tool call
-                if (toolResult.commentary) {
-                    return {
-                        response: `Tool Executed: ${toolResult.toolName}`,
-                        commentary: toolResult.commentary
-                    };
-                }
-                
-                continue;
-            }
+			const toolResult = await executeToolIfNeeded(assistantResponse);
 
-            // No tools use, return response
-            return { response: assistantResponse };
-        }
+			if (toolResult.executed) {
+				// Add tool result to conversation and continue loop
+				this.conversation.push({
+					role: 'assistant',
+					content: JSON.stringify(toolResult.result),
+				});
 
-        return { response: "Maximum iterations reached." };
-    }
+				// Return commentary if LLM added context before tool call
+				if (toolResult.commentary) {
+					return {
+						response: `Tool Executed: ${toolResult.toolName}`,
+						commentary: toolResult.commentary,
+					};
+				}
 
-    reset() {
-        this.conversation = [{
-            role: 'system',
-            content: buildSystemPrompt()
-        }];
-    }
+				continue;
+			}
+
+			// No tools use, return response
+			return { response: assistantResponse };
+		}
+
+		return { response: 'Maximum iterations reached.' };
+	}
+
+	reset() {
+		this.conversation = [
+			{
+				role: 'system',
+				content: buildSystemPrompt(),
+			},
+		];
+	}
 }

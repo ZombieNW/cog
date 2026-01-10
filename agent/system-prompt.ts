@@ -20,17 +20,19 @@ If no tool is needed, respond normally.
 `;
 
 const getToolDescription = (toolName: string): string => {
-    const tool = TOOL_REGISTRY[toolName];
-    if (!tool) throw new Error(`Unknown tool: ${toolName}`);
+	const tool = TOOL_REGISTRY[toolName];
+	if (!tool) throw new Error(`Unknown tool: ${toolName}`);
 
-    return `
+	return `
 Name: ${tool.name}
 Description: ${tool.description}
 Signature: ${JSON.stringify(tool.parameters)}
 `;
-}
+};
 
 export const buildSystemPrompt = (): string => {
-    const toolDescriptions = Object.keys(TOOL_REGISTRY).map(getToolDescription).join('\n');
-    return SYSTEM_PROMPT_TEMPLATE.replace('%s', toolDescriptions);
-}
+	const toolDescriptions = Object.keys(TOOL_REGISTRY)
+		.map(getToolDescription)
+		.join('\n');
+	return SYSTEM_PROMPT_TEMPLATE.replace('%s', toolDescriptions);
+};
