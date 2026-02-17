@@ -1,18 +1,11 @@
 {
 	"name": "cog",
 	"author": "ZombieNW",
-	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ZombieNW/cog"
 	},
-	"scripts": {
-		"build": "bun build ./index.ts --compile --outfile ./dist/cog.exe",
-		"dev": "bun run ./index.ts"
-	},
 	"module": "index.ts",
-	"type": "module",
-	"private": true,
 	"devDependencies": {
 		"@types/bun": "latest",
 		"prettier": "3.7.4"
@@ -20,10 +13,14 @@
 	"peerDependencies": {
 		"typescript": "^5"
 	},
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"build": "bun build ./index.ts --compile --outfile ./dist/cog.exe",
+		"dev": "bun run ./index.ts"
+	},
+	"type": "module",
 	"dependencies": {
-		"@anthropic-ai/sdk": "^0.71.2",
-		"@google/generative-ai": "^0.24.1",
-		"ollama": "^0.6.3",
-		"openai": "^6.15.0"
+		"@google/genai": "^1.41.0"
 	}
 }
